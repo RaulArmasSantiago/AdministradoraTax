@@ -1,0 +1,19 @@
+*/{
+	
+}
+
+body{
+	margin-top: 20px;
+}
+.btn-yellow{
+  color:#000;
+  background-color: #f9d31e;
+  border-color: #000;
+}
+.btn-yellow:hover,
+.btn-yellow.hover {
+  color: #fff;
+  background-color: #000;
+  border-color: #8c8c8c;
+}
+
