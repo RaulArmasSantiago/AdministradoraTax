@@ -99,7 +99,24 @@
 <br><br>
                     <div class="row show-grid">
                         <div class="col-md-4 text-center">
-                            <a href="#" class="create-modal btn btn-yellow">Pagar</a>
+                            @if($cont == 0)
+                                <a href="#" class="create-modal btn btn-secondary">Pagar</a><br>
+                                <label >Pagos al día</label>
+                            @else
+                                @if($cont == 1)
+                                    <a href="#" class="create-modal btn btn-success">Pagar</a><br>
+                                    <label class="text-success">Debe el pago de hoy</label>
+                                @else
+                                    @if($cont == 2)
+                                    <a href="#" class="create-modal btn btn-warning">Pagar</a><br>
+                                    <label class="text-warning">1 PAGO ATRASADO</label>
+                                    @else
+                                    <a href="#" class="create-modal btn btn-danger">Pagar</a><br>
+                                    <label class="text-danger">{{ $cont-1 }} PAGOS ATRASADO</label>
+                                    @endif
+                                @endif
+                            @endif
+                            
                         </div>
 
                         <div class="col-md-4">
@@ -127,31 +144,39 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title"></h4>
               <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title"></h4>
+              
             </div>
             <div class="modal-body">
-              <form class="form-horizontal" role="form">
-                <div class="form-group row add">
-                  <label class="col-sm-2" for="title">Title :</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="title" name="title"
-                    placeholder="Your Title Here" required>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="body">Body :</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="body" name="body"
-                    placeholder="Your Body Here" required>
-                  </div>
-                </div>
-              </form>
+                <table class="table table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Fecha de adeudo</th>
+                            <th>Cuota</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($pagos as $pago )
+                        <form action="pagar" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            
+                            <tr>
+                                <input type="hidden" name="concesionn" value="{{ $informacion->concesion }}">
+                                <input type="hidden" name="pagar" value="{{ $pago->id }}">                               
+                                <td>{{ $pago->fecha_pago }}</td>
+                                <td>
+                                    $ 350.00
+                                </td>
+                                <td><button type="submit" id="pagar" class="btn btn-yellow">Pagar</button></td>
+                            </tr>
+                        </form>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-warning" type="submit" id="add">
-                    <span class="glyphicon glyphicon-plus"></span>Save Post
-                </button>
                 <button class="btn btn-warning" type="button" data-dismiss="modal">
                     <span class="glyphicon glyphicon-remobe"></span>Close
                 </button>

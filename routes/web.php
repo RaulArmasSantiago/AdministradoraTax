@@ -29,3 +29,9 @@ Route::get('/index','ConcesionesController@index')->name('index');
 Route::post('VerConcesion','ConcesionesController@show');
 
 Route::get('/regConductor','ConcesionesController@viewRegConductor')->name('regConductor');
+
+Route::post('pagar','ConcesionesController@pagar');
+
+Route::post('regAssigConductor', 'ConcesionesController@regAssigConductor');
+
+Route::post('asignar', 'ConcesionesController@asignar');

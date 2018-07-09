@@ -91,7 +91,7 @@
 
                                 <div class="form-group">
                                     <label for="ineconcesionario" class="text-danger" style="font-size:1.5em"><strong>Foto del INE del Concesionario *</strong></label><br>
-                                    <input type="file" name="ineconcesionario" id="ineconcesionario" multiple>
+                                    <input type="file" name="ineconcesionario" id="ineconcesionario">
                                 </div>
 
                                 <div class="form-group">

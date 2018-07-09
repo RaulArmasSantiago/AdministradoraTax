@@ -19,14 +19,19 @@
                     Assigna un conductor a esta concesión
                     <br>
                     <form action="asignar" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        @foreach ($concesion as $con )
+                            <input type="hidden" name="concesion" value="{{ $con->id }}">
+                        @endforeach
                         <div class="form-group form-inline">
                             <label for="nombre" class="sr-only">Nombre del conductor:</label>
-                            <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre del Conductor" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" size="50">
+                            <input type="text" name="nombreconductor" id="nombre" class="form-control" placeholder="Nombre del Conductor" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" size="50">
                         </div>
                         <div class="form-group form-inline">
                             <label for="email" class="sr-only">Email:</label>
                             <input type="email" name="email" id="email" class="form-control" placeholder="Email" size="50">
                         </div>
+                        <input type="submit" class="btn btn-yellow" value="Asignar taxista">
                     </form>
                 
                 </div>

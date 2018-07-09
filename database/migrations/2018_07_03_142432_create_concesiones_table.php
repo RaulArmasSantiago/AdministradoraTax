@@ -16,6 +16,7 @@ class CreateConcesionesTable extends Migration
         Schema::create('concesiones', function (Blueprint $table) {
             $table->increments('id');
             $table->string('concesion');
+            $table->string('pertenece');
             $table->unsignedInteger('id_vehiculo');
             $table->foreign('id_vehiculo')->references('id')->on('vehiculos')->ondelete('cascade')->onupdate('cascade');
             $table->unsignedInteger('id_concesionario');
