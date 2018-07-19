@@ -17,6 +17,8 @@ class CreateCuotasTable extends Migration
             $table->increments('id');
             $table->date('fecha_pago');
             $table->string('status');
+            $table->integer('cuota')->default(0);
+            $table->integer('otros')->default(0);
             $table->unsignedInteger('id_concesion');
             $table->foreign('id_concesion')->references('id')->on('concesiones')->ondelete('cascade')->onupdate('cascade');
             $table->timestamps();

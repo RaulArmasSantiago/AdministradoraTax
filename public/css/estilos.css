@@ -16,4 +16,10 @@ body{
   background-color: #000;
   border-color: #8c8c8c;
 }
+#td{
+  max-width: 500px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 

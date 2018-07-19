@@ -19,7 +19,10 @@ class CreateVehiculosTable extends Migration
             $table->string('modelo');
             $table->string('año_fabricacion');
             $table->string('placa');
-            $table->string('fotovehiculo');
+            $table->string('fotovehiculofrente');
+            $table->string('fotovehiculold');
+            $table->string('fotovehiculoli');
+            $table->string('fotovehiculotrasera');
             $table->string('fotoseguro');
             $table->string('fototarjeta');
             $table->unsignedInteger('id_taximentro');

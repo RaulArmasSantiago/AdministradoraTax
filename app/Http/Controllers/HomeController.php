@@ -44,6 +44,7 @@ class HomeController extends Controller
                 ->select("cuotas.id")
                 ->join("concesiones", 'concesiones.id', '=', 'cuotas.id_concesion')
                 ->where('fecha_pago', '=', date("Y-m-d"))
+                ->where('id_concesion', '=', $idconcesion)
                 ->get();
 
                 $iduota = null;

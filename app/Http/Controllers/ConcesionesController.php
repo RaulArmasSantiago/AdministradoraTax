@@ -63,8 +63,32 @@ class ConcesionesController extends Controller
      */
     public function show(Request $request)
     {
-        //
-        
+        //        
+        $idvehiculo = DB::table('concesiones')
+        ->select('id_vehiculo')
+        ->where('concesion', '=', $request->input('concesion'))
+        ->get();
+        $idvehic = json_decode($idvehiculo, true);
+        $id=null;
+        foreach ($idvehic as $i => $v) {
+            $id = $v;
+        }
+
+        $id=implode($id);
+        $lkm = DB::table('kilometraje')
+            ->select('kilometraje')
+            ->orderBy('fecha_registro','asc')
+            ->where('id_vehiculo','=', $id)
+            ->get();
+
+        $res = json_decode($lkm,true);
+
+        foreach ($res as $key => $value) {
+            $lkm = $value;
+        }
+
+        $lkm = implode($lkm);
+
         $id=null;
         $concesion = DB::table('concesiones')
         ->select('id')
@@ -109,6 +133,7 @@ class ConcesionesController extends Controller
         $pagos = DB::table('cuotas')
                 ->select('id', 'fecha_pago')
                 ->where('status', '=', 'S/P')
+                ->where('id_concesion', '=', $idconcesion)
                 ->get();
 
         $banpago = null;
@@ -126,6 +151,14 @@ class ConcesionesController extends Controller
             ->where('concesion', '=', $request->input('concesion'))
             ->get();
     
+
+            $reportes = DB::table('reportes')
+            ->select('reportes.fecha_accidente', 'reportes.descripcion', 'reportes.status', 'conductores.nombreconductor')
+            ->join('conductores','reportes.id_conductor','=','conductores.id')
+            ->where('id_concesion','=',$idconcesion)
+            ->paginate(3);
+
+
         $informaciones = DB::table("concesiones")
                         ->join("concesionarios", 'concesionarios.id', '=', 'concesiones.id_concesionario')
                         ->join("vehiculos", 'vehiculos.id', '=', 'concesiones.id_vehiculo')
@@ -147,7 +180,7 @@ class ConcesionesController extends Controller
             return view('ErrorConcesion', compact('concesion'));
         } else {
             $res = implode($id);
-            return view('Concesion', compact('informaciones', 'pagos', 'cont'));
+            return view('Concesion', compact('informaciones', 'pagos', 'cont', 'lkm', 'reportes'));
         }
         
         
@@ -210,14 +243,15 @@ class ConcesionesController extends Controller
         ->where('id', '=', $request->input('concesion'))
         ->update(["id_conductor" => $idconductor]);
 
-        return view('home');
+        return redirect()->action('ConcesionesController@show', ['concesion' => $request->input('concesion')]);
+        
     }
 
     public function viewRegConductor(){
         return view('regConductor');
     }
 
-    public function regAssigConductor(Request $request){
+    public function regConductor(Request $request){
         DB::table('conductores') -> insert([
             "nombreconductor" => $request->input('nombreconductor'),
             "domicilioconductor" => $request->input('calleconductor'),
@@ -236,13 +270,9 @@ class ConcesionesController extends Controller
             "licenciaconductor" => $request->file('licenciaconductor')->store('public'),
             "created_at" => Carbon::now(),
             "updated_at" => Carbon::now(),
-        ]);
-        
-        
+        ]);        
 
         return view('home');
-
-
     }
 
     public function registrar(Request $request){
@@ -278,7 +308,10 @@ class ConcesionesController extends Controller
             "modelo" => $request->input('modelo'),
             "año_fabricacion" => $request->input('fabricacion'),
             "placa" => $request->input('placas'),
-            "fotovehiculo" => $request->file('fototaxi')->store('public'),
+            "fotovehiculofrente" => $request->file('fotod')->store('public'),
+            "fotovehiculold" => $request->file('fotold')->store('public'),
+            "fotovehiculoli" => $request->file('fotoli')->store('public'),
+            "fotovehiculotrasera" => $request->file('fotot')->store('public'),
             "fotoseguro" => $request->file('fotopoliza')->store('public'),
             "fototarjeta" => $request->file('fototarjeta')->store('public'),
             "id_taximentro" =>  $idtax,
@@ -415,15 +448,117 @@ class ConcesionesController extends Controller
         return view('home');
     }
 
+    public function updateKm(Request $request){
+        $idvehiculo = DB::table('concesiones')
+        ->select('id_vehiculo')
+        ->where('concesion', '=', $request->input('concesion'))
+        ->get();
+
+
+        $idvehic = json_decode($idvehiculo,true);
+        $id=null;
+        foreach ($idvehic as $i => $v) {
+            $id = $v;
+        }
+
+        if($id!=null){
+            $id = implode($id);
+            DB::table('kilometraje')->insert([
+                "kilometraje" => $request->input("kilometraje"),
+                "fecha_registro" => date("Y-m-d"),
+                "id_vehiculo" => $id,
+                "created_at" => Carbon::now(),
+                "updated_at" => Carbon::now(),
+            ]);
+        
+            return redirect()->action('ConcesionesController@show', ['concesion' => $request->input('concesion')]);
+        }    
+        
+    }
+
+    public function regReporte (Request $request){
+        $idconcesion = DB::table('concesiones')
+        ->select('id')
+        ->where('concesion', '=', $request->input('concesion'))
+        ->get();
+        $res = json_decode($idconcesion, true);
+        foreach ($res as $key => $value) {
+            $idconcesion = $value;
+        }
+        $idconcesion = implode($idconcesion);
+
+
+        $idconductor = DB::table('concesiones')
+        ->select('id_conductor')
+        ->where('concesion', '=', $request->input('concesion'))
+        ->get();
+        $res = json_decode($idconductor, true);
+        foreach ($res as $key => $value) {
+            $idconductor = $value;
+        }
+        $idconductor = implode($idconductor);
+
+        $idvehiculo = DB::table('concesiones')
+        ->select('id_vehiculo')
+        ->where('concesion', '=', $request->input('concesion'))
+        ->get();
+        $res = json_decode($idvehiculo, true);
+        foreach ($res as $key => $value) {
+            $idvehiculo = $value;
+        }
+        $idvehiculo = implode($idvehiculo);
+
+
+        DB::table('reportes')->insert([
+            "fecha_accidente" => $request->input('date'),
+            "descripcion" => $request->input('descripcion'),
+            "status" => $request->input('estado'),
+            "id_concesion" => $idconcesion,
+            "id_conductor" => $idconductor,
+            "created_at" => Carbon::now(),
+            "updated_at" => Carbon::now(),
+        ]);
+
+        return redirect()->action('ConcesionesController@show', ['concesion' => $request->input('concesion')]);
+    }
+
     public function pagar(Request $request){
         DB::table('cuotas')
         ->where('id', '=', $request->input('pagar'))
-        ->update(['status'=>"pagado"]);
+        ->update(['status'=>"pagado",'cuota'=>$request->input('cuota'),'otros'=>$request->input('otros')]);
 
+        return redirect()->action('ConcesionesController@show', ['concesion' => $request->input('concesion')]);
+        
+
+        $idvehiculo = DB::table('concesiones')
+        ->select('id_vehiculo')
+        ->where('concesion', '=', $request->input('concesion'))
+        ->get();
+        $idvehic = json_decode($idvehiculo, true);
+        $id=null;
+        foreach ($idvehic as $i => $v) {
+            $id = $v;
+        }
+
+
+        $id = implode($id);
+        $lkm = DB::table('kilometraje')
+            ->select('kilometraje')
+            ->where('id_vehiculo', '=', $id)
+            ->get();
+
+        $res = json_decode($lkm, true);
+
+        foreach ($res as $key => $value) {
+            $lkm = $value;
+        }
+
+        $lkm = implode($lkm);
+        
         $id=null;
         $concesion = DB::table('concesiones')
         ->select('id')
-        ->where('concesion', '=', $request->input('concesionn'))
+        ->where('concesion', '=', $request->input('concesion'))
         ->get();
 
         $idconcesion = json_decode($concesion, true);
@@ -481,13 +616,15 @@ class ConcesionesController extends Controller
             ->select("id_vehiculo")
             ->where('concesion', '=', $request->input('concesion'))
             ->get();
-    
+
+
+        
         $informaciones = DB::table("concesiones")
                         ->join("concesionarios", 'concesionarios.id', '=', 'concesiones.id_concesionario')
                         ->join("vehiculos", 'vehiculos.id', '=', 'concesiones.id_vehiculo')
                         ->join("taximetros", 'taximetros.id', '=', 'vehiculos.id_taximentro')
                         ->join("conductores", 'conductores.id', '=', 'concesiones.id_conductor')
-                        ->where('concesion', '=', $request->input('concesionn'))
+                        ->where('concesion', '=', $request->input('concesion'))
                         ->get();
 
         $res = json_decode($informaciones, true);
@@ -496,12 +633,24 @@ class ConcesionesController extends Controller
             $id=$v;
         }
 
+        $reportes = DB::table('reportes')
+        ->select('reportes.fecha_accidente', 'reportes.descripcion', 'reportes.status', 'conductores.nombreconductor')
+        ->join('conductores','reportes.id_conductor','=','conductores.id')
+        ->where('id_concesion','=',$idconcesion)
+        ->paginate(3);
+
         
         if ($id == null) {
-            return view('ErrorConcesion');
+            $concesion = DB::table('concesiones')
+            ->where('concesion', '=', $request->input('concesion'))
+            ->get();
+            return view('ErrorConcesion', compact('concesion'));
         } else {
+
+            return redirect()->back();
+            
             $res = implode($id);
-            return view('Concesion', compact('informaciones', 'pagos', 'cont'));
+            return view('Concesion', compact('informaciones', 'pagos', 'cont', 'lkm', 'reportes'));
         }
 
     }

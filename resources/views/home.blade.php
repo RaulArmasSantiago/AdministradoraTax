@@ -35,7 +35,7 @@
                                 </a>
                             </p>
                             <p>
-                                <a href="{{ route('index') }}">
+                                <a href="{{ route('regConductor') }}">
                                     <button class="btn btn-yellow">Nuevo Conductor</button>
                                 </a>
                             </p>

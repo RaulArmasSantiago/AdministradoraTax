@@ -17,7 +17,7 @@ class CreateReportesTable extends Migration
             $table->increments('id');
             $table->date('fecha_accidente');
             $table->string('descripcion');
-            $table->boolean('status')->default(true);
+            $table->string('status');
             $table->unsignedInteger('id_concesion');
             $table->foreign('id_concesion')->references('id')->on('concesiones')->ondelete('cascade')->onupdate('cascade');
             $table->unsignedInteger('id_conductor');

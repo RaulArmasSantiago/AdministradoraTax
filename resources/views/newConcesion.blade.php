@@ -141,10 +141,24 @@
                                     <input type="text" name="iot" id="iot" class="form-control" required="true" onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;" placeholder="Id. IoT" size="40">
                                 </div>
 
+                                
+                                <label for="fototaxi" class="text-danger" style="font-size:1.5em"><strong>Fotos del Taxi *</strong></label><br>
                                 <div class="form-group">
-                                        <label for="fototaxi" class="text-danger" style="font-size:1.5em"><strong>Foto del Taxi *</strong></label><br>
-                                        <input type="file" name="fototaxi" id="fototaxi">
-                                    </div>
+                                    <label for="fotod" class="text-danger">Foto delantera*</label>
+                                    <input type="file" name="fotod" id="fotod">
+                                </div>
+                                <div class="form-group">
+                                    <label for="fotold"class="text-danger">Foto lateral derecha*</label>
+                                    <input type="file" name="fotold" id="fotold">
+                                </div>
+                                <div class="form-group">
+                                    <label for="fotoli"class="text-danger">Foto lateral izquierda*</label>
+                                    <input type="file" name="fotoli" id="fotoli">
+                                </div>
+                                <div class="form-group">
+                                    <label for="foto"class="text-danger">Foto trasera*</label>
+                                    <input type="file" name="fotot" id="fotot">
+                                </div>
     
                                     <div class="form-group">
                                         <label for="fototarjeta" class="text-danger" style="font-size:1.5em"><strong>Foto de la Tarjeta de Circulación *</strong></label><br>
@@ -228,7 +242,7 @@
                                             </div>
             
                                             <div class="form-group">
-                                                <label for="licenciaconductor" class="text-danger" style="font-size:1.5em"><strong>Foto del Conductor *</strong></label><br>
+                                                <label for="licenciaconductor" class="text-danger" style="font-size:1.5em"><strong>Licencia del Conductor *</strong></label><br>
                                                 <input type="file" name="licenciaconductor" id="licenciaconductor" >
                                             </div>                                    
                                     </div>

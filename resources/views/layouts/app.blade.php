@@ -30,6 +30,7 @@
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
     <link href="css/jqueryui.css" type="text/css" rel="stylesheet"/>
+    
 
     <script type="text/javascript">
         function upperCase() {
@@ -48,6 +49,17 @@
             else {
                 element.style.display='none';
             }
+        }
+
+        function printDiv(nombreDiv) {
+            var contenido= document.getElementById(nombreDiv).innerHTML;
+            var contenidoOriginal= document.body.innerHTML;
+            
+            document.body.innerHTML = contenido;
+
+             window.print();
+            document.body.innerHTML = contenidoOriginal;
+            history.back();
         }
     </script>
 
@@ -117,8 +129,8 @@
     $('.form-horizontal').show();
     $('.modal-title').text('Pagar');
   });
-
-  
   </script>
+
+
 </body>
 </html>

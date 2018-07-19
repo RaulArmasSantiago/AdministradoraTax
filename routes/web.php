@@ -26,12 +26,17 @@ Route::post('registrar','ConcesionesController@registrar');
 Route::get('/index','ConcesionesController@index')->name('index');
 
 
-Route::post('VerConcesion','ConcesionesController@show');
+Route::any('VerConcesion','ConcesionesController@show');
 
 Route::get('/regConductor','ConcesionesController@viewRegConductor')->name('regConductor');
 
-Route::post('pagar','ConcesionesController@pagar');
+Route::any('pagar','ConcesionesController@pagar');
 
-Route::post('regAssigConductor', 'ConcesionesController@regAssigConductor');
+Route::post('regConductor', 'ConcesionesController@regConductor');
 
 Route::post('asignar', 'ConcesionesController@asignar');
+
+Route::any('updateKm', 'ConcesionesController@updateKm');
+
+Route::any('regReporte', 'ConcesionesController@regReporte');
+

@@ -17,7 +17,7 @@
                     <div class="row show-grid container">
                         <div class="col-md-1"></div>
                         <div class="col-md-8">
-                        <form action="regAssigConductor" method="POST" enctype="multipart/form-data">
+                        <form action="regConductor" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <hr>
                             <h3>Datos del Conductor</h3>
@@ -87,7 +87,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="licenciaconductor" class="text-danger" style="font-size:1.5em"><strong>Foto del Conductor *</strong></label><br>
+                                <label for="licenciaconductor" class="text-danger" style="font-size:1.5em"><strong>Licencia  del Conductor *</strong></label><br>
                                 <input type="file" name="licenciaconductor" id="licenciaconductor" >
                             </div>
                             <div class="text-center">
