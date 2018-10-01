@@ -20,8 +20,8 @@
                     <div class="row show grid">
                         <div class="col-md-4">
                             <p>
-                                <a href="">
-                                    <button class="btn btn-yellow bigtxt">Cuotas</button>
+                                <a href="{{ route('corte') }}">
+                                    <button class="btn btn-yellow bigtxt">Corte Diario</button>
                                 </a>
                             </p>
                             <p>

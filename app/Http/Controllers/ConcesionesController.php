@@ -633,7 +633,7 @@ class ConcesionesController extends Controller
     public function pagar(Request $request){
         DB::table('cuotas')
         ->where('id', '=', $request->input('pagar'))
-        ->update(['status'=>"pagado",'cuota'=>$request->input('cuota'),'otros'=>$request->input('otros')]);
+        ->update(['status'=>"pagado",'cuota'=>$request->input('cuota'),'otros'=>$request->input('otros'),'fecha_cobro'=>date('Y-m-d')]);
 
         return redirect()->action('ConcesionesController@show', ['concesion' => $request->input('concesion')]);
         

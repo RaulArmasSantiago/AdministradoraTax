@@ -48,3 +48,5 @@ Route::any('updateKm', 'ConcesionesController@updateKm');
 
 Route::any('regReporte', 'ConcesionesController@regReporte');
 
+Route::get('/corte', 'CorteController@index')->name('corte');
+
