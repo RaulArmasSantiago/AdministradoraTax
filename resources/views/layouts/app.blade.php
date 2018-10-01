@@ -51,6 +51,28 @@
             }
         }
 
+        function showContent2() {
+            element = document.getElementById("content2");
+            check = document.getElementById("check2");
+            if (check.checked) {
+                element.style.display='block';
+            }
+            else {
+                element.style.display='none';
+            }
+        }
+
+        function showContent3() {
+            element = document.getElementById("content3");
+            check = document.getElementById("check3");
+            if (check.checked) {
+                element.style.display='block';
+            }
+            else {
+                element.style.display='none';
+            }
+        }
+
         function printDiv(nombreDiv) {
             var contenido= document.getElementById(nombreDiv).innerHTML;
             var contenidoOriginal= document.body.innerHTML;
@@ -87,19 +109,19 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">Inicia Sesión</a>
+                                <a class="nav-link bigtxt" href="{{ route('login') }}">Inicia Sesión</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}">Registrate</a>
+                                <a class="nav-link bigtxt" href="{{ route('register') }}">Registrate</a>
                             </li>
                         @else
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle bigtxt" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }} 
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                    <a class="dropdown-item bigtxt" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
@@ -129,6 +151,22 @@
     $('.form-horizontal').show();
     $('.modal-title').text('Pagar');
   });
+  $(document).on('click','.create-modal1', function() {
+        $('#create1').modal('show');
+        $('.form-horizontal').show();
+        $('.modal-title').text('Editar Concesionario');
+  });
+  $(document).on('click','.create-modal2', function() {
+        $('#create2').modal('show');
+        $('.form-horizontal').show();
+        $('.modal-title').text('Editar Vehiculo');
+  });
+  $(document).on('click','.create-modal3', function() {
+        $('#create3').modal('show');
+        $('.form-horizontal').show();
+        $('.modal-title').text('Editar Conductor');
+  });
+    
   </script>
 
 

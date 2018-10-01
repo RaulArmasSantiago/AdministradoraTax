@@ -10,6 +10,13 @@ body{
   background-color: #f9d31e;
   border-color: #000;
 }
+
+.btn-red{
+  color:#000;
+  background-color: white;
+  border-color: #000;
+}
+
 .btn-yellow:hover,
 .btn-yellow.hover {
   color: #fff;
@@ -23,3 +30,18 @@ body{
     white-space: nowrap;
 }
 
+.letra-grande {
+  font-size: 25px !important;
+ }
+
+.bigtxt {
+  font-size: 15px !important;
+}
+
+.mdtxt {
+  font-size: 13px !important;
+}
+
+form label{
+  font-size: 15px !important;
+}

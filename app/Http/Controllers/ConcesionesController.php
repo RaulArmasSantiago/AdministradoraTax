@@ -67,43 +67,24 @@ class ConcesionesController extends Controller
         $idvehiculo = DB::table('concesiones')
         ->select('id_vehiculo')
         ->where('concesion', '=', $request->input('concesion'))
-        ->get();
-        $idvehic = json_decode($idvehiculo, true);
-        $id=null;
-        foreach ($idvehic as $i => $v) {
-            $id = $v;
+        ->first();
+
+        if(is_null($idvehiculo)){
+            return back();
         }
 
-        $id=implode($id);
         $lkm = DB::table('kilometraje')
             ->select('kilometraje')
-            ->orderBy('fecha_registro','asc')
-            ->where('id_vehiculo','=', $id)
-            ->get();
-
-        $res = json_decode($lkm,true);
-
-        foreach ($res as $key => $value) {
-            $lkm = $value;
-        }
-
-        $lkm = implode($lkm);
+            ->orderBy('fecha_registro','desc')
+            ->where('id_vehiculo','=', $idvehiculo->id_vehiculo)
+            ->first();
+            
 
         $id=null;
-        $concesion = DB::table('concesiones')
+        $idconcesion = DB::table('concesiones')
         ->select('id')
         ->where('concesion', '=', $request->input('concesion'))
-        ->get();
-
-        $idconcesion = json_decode($concesion, true);
-        foreach ($idconcesion as $i => $v) {
-            $id = $v;
-        }
-
-        if ($id != null) {
-            $idconcesion = implode($id);
-        }
-        
+        ->first();                
 
         $cuo=null;
         $cont=0;
@@ -124,7 +105,7 @@ class ConcesionesController extends Controller
             DB::table('cuotas')->insert([
                 'fecha_pago' => date('Y-m-d'),
                 'status' => 'S/P',
-                'id_concesion' => $idconcesion,
+                'id_concesion' => $idconcesion->id,
                 "created_at" => Carbon::now(),
                 "updated_at" => Carbon::now(),
             ]);
@@ -133,7 +114,7 @@ class ConcesionesController extends Controller
         $pagos = DB::table('cuotas')
                 ->select('id', 'fecha_pago')
                 ->where('status', '=', 'S/P')
-                ->where('id_concesion', '=', $idconcesion)
+                ->where('id_concesion', '=', $idconcesion->id)
                 ->get();
 
         $banpago = null;
@@ -155,7 +136,7 @@ class ConcesionesController extends Controller
             $reportes = DB::table('reportes')
             ->select('reportes.fecha_accidente', 'reportes.descripcion', 'reportes.status', 'conductores.nombreconductor')
             ->join('conductores','reportes.id_conductor','=','conductores.id')
-            ->where('id_concesion','=',$idconcesion)
+            ->where('id_concesion','=',$idconcesion->id)
             ->paginate(3);
 
 
@@ -167,12 +148,14 @@ class ConcesionesController extends Controller
                         ->where('concesion', '=', $request->input('concesion'))
                         ->get();
 
+        
+
         $res = json_decode($informaciones, true);
         //return $res;
         foreach ($res as $i => $v){
             $id=$v;
         }
-
+        
         if ($id == null) {
             $concesion = DB::table('concesiones')
             ->where('concesion', '=', $request->input('concesion'))
@@ -180,7 +163,8 @@ class ConcesionesController extends Controller
             return view('ErrorConcesion', compact('concesion'));
         } else {
             $res = implode($id);
-            return view('Concesion', compact('informaciones', 'pagos', 'cont', 'lkm', 'reportes'));
+            
+            return view('Concesion', compact('informaciones', 'idconcesion', 'pagos', 'cont', 'lkm', 'reportes'));
         }
         
         
@@ -205,9 +189,134 @@ class ConcesionesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request, $concesion)
+    {        
+
+        if($concesion!=null){
+
+            $datos = DB::table('concesiones')
+            ->where('concesion',$concesion)
+            ->first();
+
+            DB::table('concesionarios')
+            ->where('id',$datos->id_concesionario)
+            ->update([
+                "nombreconcesionario" => $request->input("nombreconcesionario"),
+                "domicilioconcesionario" => $request->input("calleconcesionario"),
+                "numExtconcesionario" => $request->input("numext"),
+                "numIntconcesionario" => $request->input("numint"),
+                "coloniaconcesionario" => $request->input("coloniaconcesion"),
+                "cpconcesionario" => $request->input("cpconcesionario"),
+                "municipioconcesionario" => $request->input("ciudadconcesionario"),
+                "estadoconcesionario" => $request->input("estadoconcesionario"),
+                "emailconcesionario" => $request->input("emailconcesionario"),
+                "telefonoconcesionario" => $request->input("fijoconcesionario"),
+                "celularconcesionario" => $request->input("cel1concesionario"),
+                "celularconcesionario2" => $request->input("cel2concesionario"),
+                "updated_at" => Carbon::now()
+            ]);
+        
+            if($request->input("check") == 1){
+                DB::table('concesionarios')
+                ->where('id',$datos->id_concesionario)
+                ->update([
+                    "fotoconcesionario" => $request->file("fotoconcesionario")->store('public'),
+                    "ineconcesionario" => $request->file("ineconcesionario")->store('public'),
+                    "licenciaconcesionario" => $request->file("licenciaconcesionario")->store('public'),
+                    "updated_at" => Carbon::now()
+                ]);
+            } 
+            return redirect()->action('ConcesionesController@show', ['concesion' => $concesion]);
+        }    
+    }
+
+    public function updateVehiculo(Request $request, $concesion){
+        if($concesion!=null){
+            $datos = DB::table('concesiones')
+            ->where('concesion',$concesion)
+            ->first();
+
+            DB::table('vehiculos')
+            ->where('id',$datos->id_vehiculo)
+            ->update([
+                "marca" => $request->input("marca"),
+                "modelo" => $request->input("modelo"),
+                "año_fabricacion" => $request->input("fabricacion"),
+                "placa" => $request->input("placas"),
+                "updated_at" => Carbon::now()
+            ]);
+
+            $taximetro = DB::table('vehiculos')
+            ->where('id',$datos->id_vehiculo)
+            ->first();
+
+            $taxi = DB::table('taximetros')            
+            ->where('id',$taximetro->id_taximentro)
+            ->update([
+                "marcatax" => $request->input("marcataximetro"),
+                "modelotax" => $request->input("modelotaximetro"),
+                "serietax" => $request->input("serietaximetro"),
+                "idiot" => $request->input("iot"),
+                "updated_at" => Carbon::now()
+            ]);
+
+            if($request->input("check2") == 1){
+                DB::table('vehiculos')
+                ->where('id',$datos->id_vehiculo)
+                ->update([
+                    "fotovehiculofrente" => $request->file("fotod")->store('public'),
+                    "fotovehiculold" => $request->file("fotold")->store('public'),
+                    "fotovehiculoli" => $request->file("fotoli")->store('public'),
+                    "fotovehiculotrasera" => $request->file("fotot")->store('public'),
+                    "fotoseguro" => $request->file("fotopoliza")->store('public'),
+                    "fototarjeta" => $request->file("fototarjeta")->store('public'),
+                    "updated_at" => Carbon::now()
+                ]);                
+            }
+
+            return redirect()->action('ConcesionesController@show', ['concesion' => $concesion]);
+        }
+    }
+
+    public function updateConductor(Request $request, $concesion){
+        if($concesion!=null){
+            $datos = DB::table('concesiones')
+            ->where('concesion',$concesion)
+            ->first();
+
+            DB::table('conductores')
+            ->where('id',$datos->id_conductor)
+            ->update([
+                "nombreconductor" => $request->input("nombreconductor"),
+                "fecha_nacimiento" => $request->input('fecha_nacimiento'),
+                "domicilioconductor" => $request->input("calleconductor"),
+                "numExtconductor" => $request->input("extconductor"),
+                "numIntconductor" => $request->input("intconductor"),
+                "estadoconductor" => $request->input("estadoconductor"),
+                "municipioconductor" => $request->input("ciudadconductor"),
+                "coloniaconductor" => $request->input("coloniaconductor"),
+                "cpconductor" => $request->input("cpconductor"),
+                "emailconductor" => $request->input("emailconductor"),
+                "telefonoconductor" => $request->input("fijoconductor"),
+                "celularconductor" => $request->input("cel1conductor"),
+                "celularconductor2" => $request->input("cel2conductor"),
+                "updated_at" => Carbon::now()
+            ]);
+        
+
+            if($request->input("check3") == 1){
+                DB::table('conductores')
+                ->where('id',$datos->id_conductor)
+                ->update([
+                    "fotoconductor" => $request->file("fotoconductor")->store('public'),
+                    "ineconductor" => $request->file("ineconductor")->store('public'),
+                    "licenciaconductor" => $request->file("licenciaconductor")->store('public'),
+                    "updated_at" => Carbon::now()
+                ]);
+            }
+
+            return redirect()->action('ConcesionesController@show', ['concesion' => $concesion]);
+        }
     }
 
     /**
@@ -230,21 +339,17 @@ class ConcesionesController extends Controller
                     ->select('id')
                     ->where('nombreconductor', '=', $request->input('nombreconductor'))
                     ->where('emailconductor', '=', $request->input('email'))
-                    ->get();
-
-        $idconductor = json_decode($conductor,true);
-        foreach ($idconductor as $i => $v) {
-            $id = $v;
-        }
-
-        $idconductor = implode($id);
-        
+                    ->first();
+        if(!is_null($conductor)){
+            dd($conductor);
         DB::table('concesiones')
         ->where('id', '=', $request->input('concesion'))
-        ->update(["id_conductor" => $idconductor]);
+        ->update(["id_conductor" => $conductor->id]);
 
         return redirect()->action('ConcesionesController@show', ['concesion' => $request->input('concesion')]);
-        
+        }else{
+            return view('home');
+        }
     }
 
     public function viewRegConductor(){
@@ -254,6 +359,7 @@ class ConcesionesController extends Controller
     public function regConductor(Request $request){
         DB::table('conductores') -> insert([
             "nombreconductor" => $request->input('nombreconductor'),
+            "fecha_nacimiento" => $request->input('fecha_nacimiento'),
             "domicilioconductor" => $request->input('calleconductor'),
             "numExtconductor" => $request->input('extconductor'),
             "numIntconductor" => $request->input('intconductor'),
@@ -343,6 +449,7 @@ class ConcesionesController extends Controller
         if($request->input('check') == 1) {
             DB::table('conductores') -> insert([
                 "nombreconductor" => $request->input('nombreconductor'),
+                "fecha_nacimiento" => $request->input('fecha_nacimiento'),
                 "domicilioconductor" => $request->input('calleconductor'),
                 "numExtconductor" => $request->input('extconductor'),
                 "numIntconductor" => $request->input('intconductor'),
@@ -447,6 +554,7 @@ class ConcesionesController extends Controller
 
         return view('home');
     }
+
 
     public function updateKm(Request $request){
         $idvehiculo = DB::table('concesiones')

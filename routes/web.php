@@ -21,7 +21,15 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/newConcesion','ConcesionesController@verRegistro')->name('newConcesion');
 
+Route::get('editConcesion/{concesion}', ['as' => 'edit.concesion','uses' => 'ConcesionesController@editConcesion']);
+
 Route::post('registrar','ConcesionesController@registrar');
+
+Route::post('update/{concesion}','ConcesionesController@update');
+
+Route::post('updateVehiculo/{concesion}','ConcesionesController@updateVehiculo');
+
+Route::post('updConductor/{concesion}','ConcesionesController@updateConductor');
 
 Route::get('/index','ConcesionesController@index')->name('index');
 
