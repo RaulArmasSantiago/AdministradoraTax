@@ -18,6 +18,7 @@ class CorteController extends Controller
     public function index()
     {
         //
+        $fechas = "Resporte del día ".date('Y-m-d');
         $concesiones = DB::table('concesiones')
         ->orderBy('concesion','asc')
         ->get();
@@ -39,7 +40,7 @@ class CorteController extends Controller
         ->where('fecha_cobro','=',date('Y-m-d'))
         ->sum('otros');
 
-        return view('corte', compact('concesiones','cortes','total'));
+        return view('corte', compact('concesiones','cortes','total','fechas'));
     }
 
     /**
@@ -69,9 +70,34 @@ class CorteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
         //
+        $fechas ="Reporte entre ".$request->input("rango1")." a ".$request->input("rango2");
+        
+        $concesiones = DB::table('concesiones')
+        ->orderBy('concesion','asc')
+        ->get();
+
+        $cortes = DB::table('concesiones')
+        ->join('cuotas','cuotas.id_concesion','=','concesiones.id')
+        
+        ->whereBetween('fecha_cobro', [$request->input("rango1"), $request->input("rango2")])
+        ->orderBy('concesion','asc')
+        ->get();
+
+
+        $total = DB::table('cuotas')
+        
+        ->whereBetween('fecha_cobro', [$request->input("rango1"), $request->input("rango2")])
+        ->sum('cuota');
+
+        $total = $total + DB::table('cuotas')
+        
+        ->whereBetween('fecha_cobro', [$request->input("rango1"), $request->input("rango2")])
+        ->sum('otros');
+
+        return view('corte', compact('concesiones','cortes','total','fechas'));
     }
 
     /**

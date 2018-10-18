@@ -50,3 +50,4 @@ Route::any('regReporte', 'ConcesionesController@regReporte');
 
 Route::get('/corte', 'CorteController@index')->name('corte');
 
+Route::any('searchReporte','CorteController@show');

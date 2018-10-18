@@ -13,14 +13,29 @@
                             {{ session('status') }}
                         </div>
                     @endif
+                    
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-6 text-center">
+                            <form action="searchReporte" method="POST">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <cite>Seleccione el rango para generar su reporte</cite>
+                                <div class="form-inline form-group">
+                                    <input class="form-control bigtxt" type="date" name="rango1" id="">&nbsp;a&nbsp;
+                                    <input class="form-control bigtxt" type="date" name="rango2" id=""> &nbsp; <button class="btn btn-success bigtxt">Generar</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-sm-12 col-md-4 text-rigth">
+                            <a href="" onclick="printDiv('preporte')"><label for=""> Imprimir</label> <img src="img/print-icon.png" alt="#"></a>
+                        </div>
+                    </div>
 
                     <div class="row justify-content-center">
-                        <div class="col-md-12 text-rigth">
-                        <a href="" onclick="printDiv('preporte')"><label for=""> Imprimir</label> <img src="img/print-icon.png" alt="#"></a><br><br></div>
                         <br>
                         <div class="col-md-8 text-center" id="preporte">
                         <div class="card">
-                            <div class="card-header"> Corte del dia {{date('d-m-Y')}}</div>
+                            <div class="card-header">{{$fechas}}</div>
                             <div class="card-body">
                                 <table class="table table-striped table-hover table-bordered">
                                     <thead class="bg-dark text-white">
