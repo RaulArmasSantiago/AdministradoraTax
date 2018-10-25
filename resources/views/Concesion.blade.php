@@ -18,7 +18,7 @@
                     
                     <div class="row show-grid">
                         <div class="col-md-3">
-                            <div class="card border-dark" style="height: 38rem;">
+                            <div class="card border-dark" style="height: 43rem;">
                                 <div class="card-header bg-warning text-black letra-grande"><b><label> Concesionario</label></b><a href="#" class="create-modal1 btn"><img src="img/edit-icon.png" alt=""></a> </div>
                                 <div class="card-body bigtxt">
                                     <h4 class="card-title tex-center "><strong>{{ $informacion->nombreconcesionario }}</strong></h4>
@@ -58,7 +58,7 @@
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="card border-dark" style="height: 38rem;">
+                            <div class="card border-dark" style="height: 43rem;">
                                 <div class="card-header bg-warning text-black letra-grande"><b><label> Conductor</label></b><a href="#" class="create-modal3 btn"><img src="img/edit-icon.png" alt=""></a></div>
                                 <div class="card-body bigtxt" id="tamaño">
                                     <h3><strong>{{ $informacion->nombreconductor }}</strong></h3>
@@ -86,6 +86,7 @@
                                    <label> fijo: {{ $informacion->telefonoconductor }}</label> <br>
                                    <label> {{ $informacion->celularconductor }}</label> <br>
                                    <label> Alternativo: {{ $informacion->celularconductor2 }}</label>
+                                   <label class="bg-danger"> Vencimiento Licencia: {{ $informacion->cad_licencia }}</label>
                                     <br>
                                    <a onclick="printDiv('pineconductor')" href="">
                                     <img src="img/ine.png" alt="" width="23px" class="img-thumbnail">
@@ -98,16 +99,18 @@
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <div class="card border-dark" style="height: 38rem;">
+                            <div class="card border-dark" style="height: 43rem;">
                                 <div class="card-header bg-warning text-black letra-grande"><b><label> Vehiculo</label></b><a href="#" class="create-modal2 btn"><img src="img/edit-icon.png" alt=""></a></div>
                                 <div class="card-body bigtxt" id="tamaño">
                                     <strong>Marca:</strong><label> {{ $informacion->marca }}</label> <br>
                                     <strong>Modelo: </strong><label> {{ $informacion->modelo }}</label> <br>
-                                    <strong>Año de Fabricación: </strong><label> {{ $informacion->año_fabricacion }}</label> <br><br>
+                                    <strong>Año de Fabricación: </strong><label> {{ $informacion->año_fabricacion }}</label> <br>
+                                    <strong>Placa: </strong><label> {{ $informacion->placa }}</label> <br>
                                     <h4 class="text-warning"><strong> Taximetro</strong></h4>
                                     <strong>Marca:</strong><label> {{ $informacion->marcatax }}</label><br>
                                     <strong>Modelo:</strong><label> {{ $informacion->modelotax }}</label><br>
                                     <strong>Num. de Serie:</strong><label> {{ $informacion->serietax }}</label><br>
+                                    <strong>Caducidad del seguro:</strong><label class="bg-danger"> {{ $informacion->cad_seguro }}</label><br>
                                     <a href="" onclick="printDiv('ptarjeta')">
                                         <img src="img/icono_grabado_tissa_03.png" alt="" height="24px">
                                     </a>
@@ -118,7 +121,7 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                                <div class="card border-dark" style="height: 38rem;">
+                                <div class="card border-dark" style="height: 43rem;">
                                     <div class="card-header bg-warning text-black letra-grande"><b><label> Siniestros</label></b></div>
                                     <div class="card-body mdtxt" id="tamaño">
                                     <table class="table table-striped table-sm table-responsive">
@@ -467,7 +470,7 @@
                                     <label for="cel2concesionario">Telefono Celular Secundario</label><label class="text-danger" style="font-size:2em">*</label><br>
                                     <input type="text" name="cel2concesionario" id="cel2concesionario" value="{!! $informacion->celularconcesionario2 !!}" class="form-control mdtxt" maxlength="10" onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;" required="true" placeholder="Telefono Celular secundario" size="40">
                                 </div>
-
+                                
                                 <b class="mdtxt">¿Quieres cambiar las fotos del concesionario?</b>
                                 <input type="checkbox" name="check" id="check" value="1" onchange="javascript:showContent()" />
                                 
@@ -568,7 +571,11 @@
                                         </div>
                                         <div class="form-group">
                                             <label>ID IoT</label><label class="text-danger" style="font-size:2em">*</label><br>
-                                            <input type="text" name="iot" id="iot" value="{!! $informacion->idiot !!}" class="form-control mdtxt" required="true" onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;" placeholder="Id. IoT" size="40">
+                                            <input type="text" name="iot" id="iot" val ue="{!! $informacion->idiot !!}" class="form-control mdtxt" required="true" onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;" placeholder="Id. IoT" size="40">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Vencimiento del </label><label class="text-danger" style="font-size:2em">*</label><br>
+                                            <input type="date" class="form-control mdtxt" name="cadseguro"> 
                                         </div>
 
                                         <b class="mdtxt">¿Quieres cambiar las fotos del vehiculo?</b>
@@ -706,6 +713,10 @@
                             <div class="form-group">
                                 <label>Celular Alternativo</label><label class="text-danger" style="font-size:2em">*</label><br>
                                 <input type="text" name="cel2conductor" id="cel2conductor" value="{!! $informacion->celularconductor2 !!}" class="form-control mdtxt" maxlength="10" onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;" placeholder="Telefono Celular Secundario" size="40" required="true">
+                            </div>
+                            <div class="form-group">
+                                <label>Vencimiento de la licencia</label><label class="text-danger" style="font-size:2em">*</label><br>
+                                <input type="date" class="form-control mdtxt" name="cadlicencia"> 
                             </div>
 
                             <b class="mdtxt">¿Quieres cambiar las fotos del conductor?</b>

@@ -243,6 +243,7 @@ class ConcesionesController extends Controller
                 "modelo" => $request->input("modelo"),
                 "año_fabricacion" => $request->input("fabricacion"),
                 "placa" => $request->input("placas"),
+                "cad_seguro" => $request->input("cadseguro"),
                 "updated_at" => Carbon::now()
             ]);
 
@@ -300,6 +301,7 @@ class ConcesionesController extends Controller
                 "telefonoconductor" => $request->input("fijoconductor"),
                 "celularconductor" => $request->input("cel1conductor"),
                 "celularconductor2" => $request->input("cel2conductor"),
+                "cad_licencia" => $request->input("cadlicencia"),
                 "updated_at" => Carbon::now()
             ]);
         
