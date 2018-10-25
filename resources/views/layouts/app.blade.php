@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Administradora :: Taxis de Saltillo</title>
     <link rel="shortcut icon" href="favicon.ico">
 
     <!-- Scripts -->

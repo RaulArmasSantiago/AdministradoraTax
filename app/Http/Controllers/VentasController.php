@@ -34,7 +34,14 @@ class VentasController extends Controller
             "producto" => $request->input('producto'),
             "cantidad" => $request->input('cantidad'),
             "total" => $request->input('total'),
-            "folio" => $request->input('folio')
+            "folio" => $request->input('folio'),
+            "nombre" => $request->input('nombre'),
+            "email" => $request->input('email'),
+            "taximetro" => $request->input('taximetro'),
+            "vehiculo" => $request->input('vehiculo'),
+            "placa" => $request->input('placa'),
+            "serie" => $request->input('serie'),
+            "fecha_venta" => date('Y-m-d')
         ]);
 
         return redirect()->action('VentasController@index');
