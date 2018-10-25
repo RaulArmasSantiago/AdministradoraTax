@@ -8,7 +8,7 @@
         </div>
         <div class="col-md-8 letra-grande">
             <div class="card">
-                <div class="card-header">Home</div>
+                <div class="card-header">Conceciones</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -22,7 +22,7 @@
                             <p>
                                 <a href="{{ route('corte') }}">
                                     <button class="btn btn-yellow bigtxt">Corte Diario</button>
-                                </a>
+                                </a>                        
                             </p>
                             <p>
                                 <a href="{{ route('newConcesion') }}">
@@ -46,10 +46,21 @@
                             </form>   
                         </div>
                     </div>
+                    <hr>
+                    <div class="card-header">Taller</div>
+                    <p>
+                        <a href="{{ route('ventas') }}">
+                            <button class="btn btn-yellow bigtxt">Ventas</button>
+                        </a>
+                        <a href="{{ route('inventario') }}">
+                            <button class="btn btn-yellow bigtxt">Inventario</button>
+                        </a>                        
+                    </p>
 
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 @endsection

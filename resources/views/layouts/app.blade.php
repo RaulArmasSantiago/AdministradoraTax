@@ -166,6 +166,11 @@
         $('.form-horizontal').show();
         $('.modal-title').text('Editar Conductor');
   });
+  $(document).on('click','.create-modal4', function() {
+        $('#create4').modal('show');
+        $('.form-horizontal').show();
+        $('.modal-title').text('Agregar elemento al inventario');
+  });
     
   </script>
 

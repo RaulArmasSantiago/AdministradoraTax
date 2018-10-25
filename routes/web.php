@@ -21,8 +21,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/newConcesion','ConcesionesController@verRegistro')->name('newConcesion');
 
-Route::get('editConcesion/{concesion}', ['as' => 'edit.concesion','uses' => 'ConcesionesController@editConcesion']);
-
 Route::post('registrar','ConcesionesController@registrar');
 
 Route::post('update/{concesion}','ConcesionesController@update');
@@ -32,7 +30,6 @@ Route::post('updateVehiculo/{concesion}','ConcesionesController@updateVehiculo')
 Route::post('updConductor/{concesion}','ConcesionesController@updateConductor');
 
 Route::get('/index','ConcesionesController@index')->name('index');
-
 
 Route::any('VerConcesion','ConcesionesController@show');
 
@@ -51,3 +48,19 @@ Route::any('regReporte', 'ConcesionesController@regReporte');
 Route::get('/corte', 'CorteController@index')->name('corte');
 
 Route::any('searchReporte','CorteController@show');
+
+Route::get('/inventario','InventarioController@index')->name('inventario');
+
+Route::any('addProduct','InventarioController@addProduct');
+
+Route::post('minusProduct','InventarioController@minusProduct');
+
+Route::post('plusProduct','InventarioController@plusProduct');
+
+Route::get('editConcesion/{concesion}', ['as' => 'edit.concesion','uses' => 'ConcesionesController@editConcesion']);
+
+Route::get('/ventas','VentasController@index')->name('ventas');
+
+Route::any('addVenta','VentasController@addVenta');
+
+Route::any('filtrarVentas','VentasController@show');

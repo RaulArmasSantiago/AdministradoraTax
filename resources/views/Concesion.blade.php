@@ -121,7 +121,7 @@
                                 <div class="card border-dark" style="height: 38rem;">
                                     <div class="card-header bg-warning text-black letra-grande"><b><label> Siniestros</label></b></div>
                                     <div class="card-body mdtxt" id="tamaño">
-                                    <table class="table table-striped table-sm table-responsive" style="">
+                                    <table class="table table-striped table-sm table-responsive">
                                         <thead class="table-dark">
                                             <tr>
                                                 <th id="td">Fecha</th>
